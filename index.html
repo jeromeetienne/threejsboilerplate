@@ -1,0 +1,229 @@
+<html>
+	<head>
+		<script src="vendor/three.js/Three.js"></script>
+		<script src="vendor/three.js/RequestAnimationFrame.js"></script>
+		<script src="vendor/three.js/Stats.js"></script>
+		<script src="vendor/three.js/Detector.js"></script>
+		
+		<script src="vendor/csg.js"></script>
+		<script src="vendor/ThreeCSG.js"></script>
+
+		<script src="vendor/threex/THREEx.GeometryUtils.js"></script>
+		<script src="vendor/threex/THREEx.screenshot.js"></script>
+		<style>
+			body {
+				background: #408040;
+				overflow:hidden;
+				padding:0;
+				margin:0;
+
+				color: #CCCCCC;
+				font-family:Monospace;
+				font-size:13px;
+				text-align:center;
+			}
+			#info {
+				position: absolute;
+				top: 0px; width: 100%;
+				padding: 5px;
+			}
+			#info a {
+				color	: #FFAAFF;
+			}
+		</style>
+	</head>
+<body>
+    	<div id="container"></div>
+	<div id="info">
+		<a href="/blog/2011/12/10/constructive-solid-geometry-with-csg-js/" target="_blank">LearningThree.js</a> - Contructive Solid Geometry
+		<br/>
+		Use
+		<a href="http://evanw.github.com/csg.js/" target="_blank">csg.js</a>
+		,
+		<a href="http://chandler.prallfamily.com/2011/12/constructive-solid-geometry-with-three-js/" target="_blank">ThreeCSG.js</a>
+		and
+		<a href="https://github.com/mrdoob/three.js/" target="_blank">three.js</a>
+		<br>
+		Operations:
+		<a href="#substract" onclick="window.location.href=this.href;window.location.reload();">subtract</a>
+		-
+		<a href="#union" onclick="window.location.href=this.href;window.location.reload();">union</a>
+		-
+		<a href="#intersect" onclick="window.location.href=this.href;window.location.reload();">intersect</a>
+	</div>
+		
+	<script type="text/javascript">
+		var container, stats;
+		var camera, scene, renderer, mesh;
+		var mouseX = 0, mouseY = 0;
+		var windowHalfX = window.innerWidth / 2;
+		var windowHalfY = window.innerHeight / 2;
+
+		init();
+		animate();
+		function init(){
+			if( Detector.webgl ){
+				renderer = new THREE.WebGLRenderer({
+					antialias	: true,
+					preserveDrawingBuffer	: true
+				});				
+			}else{
+				renderer	= renderer = new THREE.CanvasRenderer();
+			}
+			renderer.setSize( window.innerWidth, window.innerHeight );
+		
+			document.getElementById('container').appendChild(renderer.domElement);
+			
+			scene = new THREE.Scene();
+
+			THREEx.Screenshot.bindKey(renderer, {
+				width		: 320,
+				height		: 240,
+				callback	: function(url){
+					window.open(url, Math.random());
+				}
+			});
+
+			camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000 );
+			camera.position.set(0, 0, 4);
+			camera.lookAt(scene.position);
+			scene.add(camera);
+
+			var directionalLight = new THREE.DirectionalLight();
+			directionalLight.color.setHSV(0.66, 0.75, 1.0 );
+			directionalLight.position.set( 1, 1, 1).normalize();
+			scene.add( directionalLight );
+			
+			var directionalLight = new THREE.DirectionalLight();
+			directionalLight.color.setHSV( 0.66, 0.5, 0.75 );
+			directionalLight.position.set( -1, -1, -1).normalize();
+			scene.add( directionalLight );
+			
+			pointLight = new THREE.PointLight( 0x000000, 2 );
+			pointLight.color.setHSV( 0.33, 0.0, 0.75 );
+			pointLight.position.set( -3, +3, -3);
+			scene.add( pointLight );
+
+			pointLight = new THREE.PointLight( 0x000000, 1.5 );
+			pointLight.color.setHSV( 0.33, 0.0, 0.75 );
+			pointLight.position.set(  2, -2, 2);
+			scene.add( pointLight );
+	
+			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+			document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+
+			var material	= new THREE.MeshNormalMaterial({
+				shading: THREE.SmoothShading
+			});
+			//var material	= new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x808080, shininess: 30, shading: THREE.FlatShading });
+			var material	= new THREE.MeshLambertMaterial( { color: 0xaaaaDD, shading: THREE.FlatShading } );
+			//var material	= new THREE.MeshBasicMaterial( { color: 0xdddddd, shading: THREE.FlatShading } );
+
+			var cubeMesh	= new THREE.Mesh( new THREE.CubeGeometry( 2, 2, 2 ), material );
+			//var cubeMesh	= new THREE.Mesh( new THREE.SphereGeometry( 1, 32, 16), material );
+			//var cubeMesh	= new THREE.Mesh( new THREE.SphereGeometry( 1, 16, 8), material );
+			var cubeCsg	= THREE.CSG.toCSG(cubeMesh);
+			var resultCsg	= cubeCsg;
+
+			var radius	= 1/4;
+			var sphereMesh	= new THREE.Mesh( new THREE.SphereGeometry(radius, 16, 8), material );
+			//var sphereMesh	= new THREE.Mesh( new THREE.SphereGeometry(radius, 32, 16), material );
+
+			var o		= 0.6;
+			var r		= 1;
+			var coordinates	= [
+				// Face 6
+				[-o, -o, +r],
+				[-o,  0, +r],
+				[-o, +o, +r],
+				[+o, -o, +r],
+				[+o,  0, +r],
+				[+o, +o, +r],
+				// Face 1
+				[ 0,  0, -r],
+				// Face 4
+				[-r, +o, -o],
+				[-r, -o, -o],
+				[-r, +o, +o],
+				[-r, -o, +o],
+				// Face 3
+				[+r, +o, -o],
+				[+r,  0,  0],
+				[+r, -o, +o],
+				// Face 2
+				[+o, +r, -o],
+				[-o, +r, +o],
+				// Face 5
+				[+o, -r, -o],
+				[-o, -r, -o],
+				[ 0, -r,  0],
+				[+o, -r, +o],
+				[-o, -r, +o],
+			];
+
+			var dots	= new THREE.Geometry();
+			for(var i = 0; i < coordinates.length; i++){
+				var coords	= coordinates[i];
+
+				sphereMesh.position.x	= coords[0];
+				sphereMesh.position.y	= coords[1];
+				sphereMesh.position.z	= coords[2];
+
+				THREE.GeometryUtils.merge(dots, sphereMesh);
+			}
+			var sphereCsg	= THREE.CSG.toCSG(dots);
+			
+			var operation	= window.location.hash.substr(1) || "substract";
+			if( operation === "substract" ){
+				var resultCsg	= resultCsg.subtract(sphereCsg);
+			}else if( operation === "union" ){
+				var resultCsg	= resultCsg.union(sphereCsg);
+			}else if( operation === "intersect" ){
+				var resultCsg	= resultCsg.intersect(sphereCsg);
+			}else{
+				var resultCsg	= resultCsg.subtract(sphereCsg);
+			}
+
+			var resultGeo	= THREE.CSG.fromCSG( resultCsg );
+
+			THREEx.GeometryUtils.center(resultGeo);	
+
+			mesh = new THREE.Mesh( resultGeo, material );
+
+			scene.add( mesh );
+		}
+		function onDocumentMouseMove(event) {
+
+			mouseX = event.clientX - windowHalfX;
+			mouseY = event.clientY - windowHalfY;
+
+		}
+		function onDocumentTouchMove( event ) {
+			if ( event.touches.length == 1 ) {
+				event.preventDefault();
+				mouseX = event.touches[ 0 ].pageX - windowHalfX;
+				mouseY = event.touches[ 0 ].pageY - windowHalfY;
+			}
+		}
+
+		function animate() {
+
+			requestAnimationFrame( animate );
+
+			render();
+			//stats.update();
+
+		}
+
+		function render() {
+
+			camera.position.x += ( +mouseX/40 - camera.position.x ) * .2;
+			camera.position.y += ( -mouseY/40 - camera.position.y ) * .2;
+			camera.lookAt( scene.position );
+
+			renderer.render( scene, camera );
+
+		}
+	</script>
+</body>
+</html>
