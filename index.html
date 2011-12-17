@@ -15,6 +15,8 @@
 		<script src="vendor/threex/THREEx.screenshot.js"></script>
 		<script src="vendor/threex/THREEx.FullScreen.js"></script>
 		<script src="vendor/threex/THREEx.WindowResize.js"></script>
+
+		<script src="vendor/THREEx.dragpanControl.js"></script>
 		<style>
 			body {
 				overflow	: hidden;
@@ -59,10 +61,8 @@
 	</div> 
 
 	<script type="text/javascript">
-		var clock = new THREE.Clock();
 		var container, stats;
-		var camera, scene, renderer;
-		var mouseX = 0, mouseY = 0;
+		var camera, cameraCtrl, scene, renderer;
 
 		init();
 		animate();
@@ -98,9 +98,7 @@
 			THREEx.FullScreen.bindKey();
 			THREEx.WindowResize(renderer, camera);
 
-			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-			document.addEventListener( 'touchstart',onDocumentTouchStart,false );
-			document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+			cameraCtrl	= new THREEx.DragPanControl(camera)
 
 			// here you add your objects
 			var geometry	= new THREE.TorusGeometry( 1, 0.42 );
@@ -109,37 +107,6 @@
 			scene.add( mesh );
 
 		}
-
-		function onDocumentMouseMove(event) {
-
-			mouseX = ( event.clientX / window.innerWidth ) - 0.5;
-			mouseY = ( event.clientY / window.innerHeight) - 0.5;
-
-		}
-		
-		function onDocumentTouchStart( event ) {
-	
-			if ( event.touches.length == 1 ) {
-				
-				// no preventDefault to get click event on ios
-	
-				mouseX = ( event.touches[ 0 ].pageX / window.innerWidth ) - 0.5;
-				mouseY = ( event.touches[ 0 ].pageY / window.innerHeight) - 0.5;
-	
-			}
-		}
-		function onDocumentTouchMove( event ) {
-	
-			if ( event.touches.length == 1 ) {
-	
-				event.preventDefault();
-
-				mouseX = ( event.touches[ 0 ].pageX / window.innerWidth ) - 0.5;
-				mouseY = ( event.touches[ 0 ].pageY / window.innerHeight) - 0.5;
-	
-			}
-		}
-
 
 		function animate() {
 
@@ -152,10 +119,8 @@
 		}
 
 		function render() {
-			
-			camera.position.x += ( mouseX * -40 - camera.position.x ) * .04;
-			camera.position.y += ( mouseY * +40 - camera.position.y ) * .04;
-			camera.lookAt( scene.position );
+
+			cameraCtrl.update();
 
 			renderer.render( scene, camera );
 
