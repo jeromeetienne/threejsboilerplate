@@ -22,16 +22,15 @@
 				margin		: 0;
 
 				color		: #222; 
-				font-family	: Monospace;
-				font-size	: 14px;
-				font-weight	: bolder;
-				text-align	: center;
+				font-family	: arial;
+				font-size	: 100%;
 			}
 			#info {
 				position	: absolute;
 				top		: 0px;
 				width		: 100%;
 				padding		: 5px;
+				text-align	: center;
 			}
 			#info a {
 				color		: #66F;
@@ -39,6 +38,12 @@
 			}
 			#info a:hover {
 				text-decoration	: underline;
+			}
+			#inlineDoc {
+				position	: absolute;
+				bottom		: 0px;
+				right		: 5px;
+				padding		: 5px;
 			}
 		</style>
 	</head>
@@ -48,6 +53,9 @@
 		<a href="/" target="_blank">LearningThree.js</a>
 		boiler plate for
 		<a href="https://github.com/mrdoob/three.js/" target="_blank">three.js</a>
+	</div> 
+	<div id="inlineDoc">
+		<i>f</i> for fullscreen - <i>p</i> for screenshot
 	</div> 
 
 	<script type="text/javascript">
@@ -89,14 +97,16 @@
 			THREEx.Screenshot.bindKey(renderer);
 			THREEx.FullScreen.bindKey();
 			THREEx.WindowResize(renderer, camera);
-	
+
+			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+			document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+
+			// here you add your objects
 			var geometry	= new THREE.TorusGeometry( 1, 0.42 );
 			var material	= new THREE.MeshNormalMaterial();
 			var mesh	= new THREE.Mesh( geometry, material );
 			scene.add( mesh );
 
-			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-			document.addEventListener( 'touchmove', onDocumentTouchMove, false );
 		}
 
 		function onDocumentMouseMove(event) {
