@@ -16,7 +16,7 @@
 		<script src="vendor/threex/THREEx.FullScreen.js"></script>
 		<script src="vendor/threex/THREEx.WindowResize.js"></script>
 
-		<script src="vendor/THREEx.dragpanControl.js"></script>
+		<script src="vendor/DragPanControls.js"></script>
 		<style>
 			body {
 				overflow	: hidden;
@@ -97,7 +97,7 @@
 			THREEx.FullScreen.bindKey();
 			THREEx.WindowResize(renderer, camera);
 
-			cameraCtrl	= new THREEx.DragPanControl(camera)
+			cameraCtrl	= new THREE.DragPanControls(camera)
 
 			// here you add your objects
 			var geometry	= new THREE.TorusGeometry( 1, 0.42 );
