@@ -53,7 +53,7 @@
 	<script type="text/javascript">
 		var clock = new THREE.Clock();
 		var container, stats;
-		var camera, scene, renderer, mesh;
+		var camera, scene, renderer;
 		var mouseX = 0, mouseY = 0;
 
 		init();
@@ -89,45 +89,11 @@
 			THREEx.Screenshot.bindKey(renderer);
 			THREEx.FullScreen.bindKey();
 			THREEx.WindowResize(renderer, camera);
-
-			//cameraCtrl = new THREE.TrackballControls( camera, renderer.domElement );
-			//cameraCtrl.rotateSpeed		= 0.1;
-			//cameraCtrl.staticMoving		= false;
-			//cameraCtrl.dynamicDampingFactor	= 0.3;
-
-			// TODO what to do with the light ?
-
-			var directionalLight = new THREE.DirectionalLight();
-			directionalLight.color.setHSV(0.66, 0.75, 1.0 );
-			directionalLight.position.set( 1, 1, 1).normalize();
-			scene.add( directionalLight );
-			
-			var directionalLight = new THREE.DirectionalLight();
-			directionalLight.color.setHSV( 0.66, 0.5, 0.75 );
-			directionalLight.position.set( -1, -1, -1).normalize();
-			scene.add( directionalLight );
-			
-			pointLight = new THREE.PointLight( 0x000000, 2 );
-			pointLight.color.setHSV( 0.33, 0.0, 0.75 );
-			pointLight.position.set( -3, +3, -3);
-			scene.add( pointLight );
-
-			pointLight = new THREE.PointLight( 0x000000, 1.5 );
-			pointLight.color.setHSV( 0.33, 0.0, 0.75 );
-			pointLight.position.set(  2, -2, 2);
-			scene.add( pointLight );
 	
-			var geometry	= new THREE.CubeGeometry( 1, 1, 1 );
-			//geometry	= new THREE.TorusGeometry( 1, 0.42, 32, 30 );
-			geometry	= new THREE.TorusGeometry( 1, 0.42 );
+			var geometry	= new THREE.TorusGeometry( 1, 0.42 );
 			var material	= new THREE.MeshNormalMaterial();
 			var mesh	= new THREE.Mesh( geometry, material );
 			scene.add( mesh );
-			
-			// to prevent page scrolling on ios
-			document.addEventListener( 'touchstart', function(event){
-				event.preventDefault();
-			}, false );	
 
 			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 			document.addEventListener( 'touchmove', onDocumentTouchMove, false );
@@ -165,8 +131,8 @@
 
 		function render() {
 			
-			camera.position.x += ( mouseX * -20 - camera.position.x ) * .5;
-			camera.position.y += ( mouseY * +20 - camera.position.y ) * .05;
+			camera.position.x += ( mouseX * -40 - camera.position.x ) * .04;
+			camera.position.y += ( mouseY * +40 - camera.position.y ) * .04;
 			camera.lookAt( scene.position );
 
 			renderer.render( scene, camera );
