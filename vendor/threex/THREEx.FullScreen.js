@@ -49,7 +49,7 @@ THREEx.FullScreen.request	= function(element)
 {
 	element	= element	|| document.body;
 	if( this._hasWebkitFullScreen ){
-		element.webkitRequestFullScreen();
+		element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
 	}else if( this._hasMozFullScreen ){
 		element.mozRequestFullScreen();
 	}else{
@@ -71,7 +71,46 @@ THREEx.FullScreen.cancel	= function()
 	}
 }
 
+
 // internal functions to know which fullscreen API implementation is available
 THREEx.FullScreen._hasWebkitFullScreen	= 'webkitCancelFullScreen' in document	? true : false;	
 THREEx.FullScreen._hasMozFullScreen	= 'mozCancelFullScreen' in document	? true : false;	
 
+/**
+ * Bind a key to renderer screenshot
+*/
+THREEx.FullScreen.bindKey	= function(opts){
+	opts		= opts		|| {};
+	var charCode	= opts.charCode	|| 'f'.charCodeAt(0);
+	var dblclick	= opts.dblclick !== undefined ? opts.dblclick : false;
+	var element	= opts.element
+
+	var toggle	= function(){
+		if( THREEx.FullScreen.activated() ){
+			THREEx.FullScreen.cancel();
+		}else{
+			THREEx.FullScreen.request(element);
+		}		
+	}
+
+	// callback to handle keypress
+	var onKeyPress	= function(event){
+		// return now if the KeyPress isnt for the proper charCode
+		if( event.which !== charCode )	return;
+		// toggle fullscreen
+		toggle();
+	}.bind(this);
+
+	// listen to keypress
+	// NOTE: for firefox it seems mandatory to listen to document directly
+	document.addEventListener('keypress', onKeyPress, false);
+	// listen to dblclick
+	dblclick && document.addEventListener('dblclick', toggle, false);
+
+	return {
+		unbind	: function(){
+			document.removeEventListener('keypress', onKeyPress, false);
+			dblclick && document.removeEventListener('dblclick', toggle, false);
+		}
+	};
+}

@@ -88,24 +88,27 @@ var THREEx	= THREEx 		|| {};
 	var bindKey	= function(renderer, opts){
 		// handle parameters
 		opts		= opts		|| {};
-// FIXME this modification of opts parameters is a bug. remove it
-		opts.charCode	= opts.charCode	|| 'p'.charCodeAt(0);
-		opts.width	= opts.width	|| 640;
-		opts.height	= opts.height	|| 480;
-		opts.callback	= opts.callback	|| function(url){
-			window.open(url);
+		var charCode	= opts.charCode	|| 'p'.charCodeAt(0);
+		var width	= opts.width;
+		var height	= opts.height;
+		var callback	= opts.callback	|| function(url){
+			window.open(url, "name-"+Math.random());
 		};
 
 		// callback to handle keypress
 		var onKeyPress	= function(event){
 			// return now if the KeyPress isnt for the proper charCode
-			if( event.which !== opts.charCode )	return;
+			if( event.which !== charCode )	return;
 			// get the renderer output
 			var dataUrl	= this.toDataURL(renderer);
-// FIXME dont resize if not explicitly asked
-// * resize == async so if callback is a window open, it triggers the pop blocker
-			// resize it and notify the callback
-			_aspectResize(dataUrl, opts.width, opts.height, opts.callback);
+
+			if( width === undefined && height === undefined ){
+				callback( dataUrl )
+			}else{
+				// resize it and notify the callback
+				// * resize == async so if callback is a window open, it triggers the pop blocker
+				_aspectResize(dataUrl, width, height, callback);				
+			}
 		}.bind(this);
 
 		// listen to keypress

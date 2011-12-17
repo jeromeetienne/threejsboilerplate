@@ -5,69 +5,60 @@
 		<script src="vendor/three.js/Stats.js"></script>
 		<script src="vendor/three.js/Detector.js"></script>
 		
-		<script src="vendor/csg.js"></script>
-		<script src="vendor/ThreeCSG.js"></script>
-
-		<script src="vendor/threex/THREEx.GeometryUtils.js"></script>
 		<script src="vendor/threex/THREEx.screenshot.js"></script>
+		<script src="vendor/threex/THREEx.FullScreen.js"></script>
+		<script src="vendor/threex/THREEx.WindowResize.js"></script>
 		<style>
 			body {
-				background: #408040;
-				overflow:hidden;
-				padding:0;
-				margin:0;
+				background	: #BBB;
+				overflow	: hidden;
+				padding		: 0;
+				margin		: 0;
 
-				color: #CCCCCC;
-				font-family:Monospace;
-				font-size:13px;
-				text-align:center;
+				color		: #eee;
+				font-family	: Monospace;
+				font-size	: 14px;
+				font-weight	: bolder;
+				text-align	: center;
 			}
 			#info {
-				position: absolute;
-				top: 0px; width: 100%;
-				padding: 5px;
+				position	: absolute;
+				top		: 0px;
+				width		: 100%;
+				padding		: 5px;
 			}
 			#info a {
-				color	: #FFAAFF;
+				color		: #66F;
+				text-decoration	: none;
+			}
+			#info a:hover {
+				text-decoration	: underline;
 			}
 		</style>
 	</head>
 <body>
     	<div id="container"></div>
 	<div id="info">
-		<a href="/blog/2011/12/10/constructive-solid-geometry-with-csg-js/" target="_blank">LearningThree.js</a> - Contructive Solid Geometry
-		<br/>
-		Use
-		<a href="http://evanw.github.com/csg.js/" target="_blank">csg.js</a>
-		,
-		<a href="http://chandler.prallfamily.com/2011/12/constructive-solid-geometry-with-three-js/" target="_blank">ThreeCSG.js</a>
-		and
+		<a href="/" target="_blank">LearningThree.js</a>
+		boiler plate for
 		<a href="https://github.com/mrdoob/three.js/" target="_blank">three.js</a>
-		<br>
-		Operations:
-		<a href="#substract" onclick="window.location.href=this.href;window.location.reload();">subtract</a>
-		-
-		<a href="#union" onclick="window.location.href=this.href;window.location.reload();">union</a>
-		-
-		<a href="#intersect" onclick="window.location.href=this.href;window.location.reload();">intersect</a>
 	</div>
-		
+
 	<script type="text/javascript">
 		var clock = new THREE.Clock();
 		var container, stats;
 		var camera, scene, renderer, mesh;
-		var mouseX = 0, mouseY = 0;
-		var windowHalfX = window.innerWidth / 2;
-		var windowHalfY = window.innerHeight / 2;
 
 		init();
 		animate();
+
 		function init(){
 			if( Detector.webgl ){
 				renderer = new THREE.WebGLRenderer({
-					antialias	: true,
+					antialias		: true,
 					preserveDrawingBuffer	: true
-				});				
+				});
+				renderer.setClearColor( 0xBBBBBB, 1.0 );
 			}else{
 				renderer	= renderer = new THREE.CanvasRenderer();
 			}
@@ -84,23 +75,21 @@
 
 			scene = new THREE.Scene();
 
-			THREEx.Screenshot.bindKey(renderer,  {
-				width		: 320,
-				height		: 240,
-				callback	: function(url){
-					window.open(url, Math.random());
-				}
-			});
-
 			camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000 );
-			camera.position.set(0, 0, 4);
+			camera.position.set(0, 0, 5);
 			//camera.lookAt(scene.position);
 			scene.add(camera);
 
-			controls = new THREE.TrackballControls( camera, renderer.domElement );
-			//controls.rotateSpeed		= 0.1;
-			//controls.staticMoving		= false;
-			//controls.dynamicDampingFactor	= 0.3;
+			THREEx.Screenshot.bindKey(renderer);
+			THREEx.FullScreen.bindKey();
+			THREEx.WindowResize(renderer, camera);
+
+			cameraCtrl = new THREE.TrackballControls( camera, renderer.domElement );
+			//cameraCtrl.rotateSpeed		= 0.1;
+			//cameraCtrl.staticMoving		= false;
+			//cameraCtrl.dynamicDampingFactor	= 0.3;
+
+			// TODO what to do with the light ?
 
 			var directionalLight = new THREE.DirectionalLight();
 			directionalLight.color.setHSV(0.66, 0.75, 1.0 );
@@ -123,6 +112,7 @@
 			scene.add( pointLight );
 	
 			var geometry	= new THREE.CubeGeometry( 1, 1, 1 );
+			geometry	= new THREE.TorusGeometry( 1, 0.42, 32, 30 );
 			var material	= new THREE.MeshNormalMaterial();
 			var mesh	= new THREE.Mesh( geometry, material );
 			scene.add( mesh );
@@ -140,7 +130,7 @@
 
 		function render() {
 			
-			controls.update( clock.getDelta() );
+			cameraCtrl.update( clock.getDelta() );
 
 			renderer.render( scene, camera );
 
