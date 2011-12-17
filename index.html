@@ -99,7 +99,7 @@
 			THREEx.WindowResize(renderer, camera);
 
 			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-			document.addEventListener( 'touchstart', onDocumentTouchMove, false );
+			document.addEventListener( 'touchstart',onDocumentTouchStart,false );
 			document.addEventListener( 'touchmove', onDocumentTouchMove, false );
 
 			// here you add your objects
@@ -117,6 +117,17 @@
 
 		}
 		
+		function onDocumentTouchStart( event ) {
+	
+			if ( event.touches.length == 1 ) {
+				
+				// no preventDefault to get click event on ios
+	
+				mouseX = ( event.touches[ 0 ].pageX / window.innerWidth ) - 0.5;
+				mouseY = ( event.touches[ 0 ].pageY / window.innerHeight) - 0.5;
+	
+			}
+		}
 		function onDocumentTouchMove( event ) {
 	
 			if ( event.touches.length == 1 ) {
