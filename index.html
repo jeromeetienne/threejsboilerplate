@@ -17,42 +17,12 @@
 		<script src="vendor/threex/THREEx.WindowResize.js"></script>
 
 		<script src="vendor/DragPanControls.js"></script>
-		<style>
-			body {
-				overflow	: hidden;
-				padding		: 0;
-				margin		: 0;
-
-				color		: #222; 
-				font-family	: arial;
-				font-size	: 100%;
-			}
-			#info {
-				position	: absolute;
-				top		: 0px;
-				width		: 100%;
-				padding		: 5px;
-				text-align	: center;
-			}
-			#info a {
-				color		: #66F;
-				text-decoration	: none;
-			}
-			#info a:hover {
-				text-decoration	: underline;
-			}
-			#inlineDoc {
-				position	: absolute;
-				bottom		: 0px;
-				right		: 5px;
-				padding		: 5px;
-			}
-		</style>
+		<link  href="css/main.css" rel="stylesheet"></link>
 	</head>
 <body>
     	<div id="container"></div>
 	<div id="info">
-		<a href="http://learningthreejs.com/" target="_blank">LearningThree.js</a>
+		<a href="http://learningthreejs.com/blog/2011/12/20/boilerplate-for-three-js/" target="_blank">LearningThree.js</a>
 		boiler plate for
 		<a href="https://github.com/mrdoob/three.js/" target="_blank">three.js</a>
 	</div> 
@@ -61,19 +31,22 @@
 	</div> 
 
 	<script type="text/javascript">
-		var container, stats;
-		var camera, cameraCtrl, scene, renderer;
+		var stats, scene, renderer;
+		var camera, cameraControls, scene, renderer;
 
-		init();
-		animate();
+		if( !init() )	animate();
 
 		function init(){
-			if( Detector.webgl ){
+			if( Detector.webgl && false ){
 				renderer = new THREE.WebGLRenderer({
 					antialias		: true,
 					preserveDrawingBuffer	: true
 				});
 				renderer.setClearColorHex( 0xBBBBBB, 1 );
+			// if webgl is required
+			//}else{
+			//	Detector.addGetWebGLMessage();
+			//	return true;
 			}else{
 				renderer	= renderer = new THREE.CanvasRenderer();
 			}
@@ -82,44 +55,48 @@
 			
 			// add Stats.js - https://github.com/mrdoob/stats.js
 			stats = new Stats();
-			stats.domElement.style.position = 'absolute';
-			stats.domElement.style.top = '0px';
+			stats.domElement.style.position	= 'absolute';
+			stats.domElement.style.bottom	= '0px';
 			document.body.appendChild( stats.domElement );
 
-
+			// create a scene
 			scene = new THREE.Scene();
 
+			// put a camera in the scene
 			camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000 );
 			camera.position.set(0, 0, 5);
 			scene.add(camera);
 
+			// create a camera contol
+			cameraControls	= new THREE.DragPanControls(camera)
+
+			// allow 'p' to make screenshot
 			THREEx.Screenshot.bindKey(renderer);
+			// allow 'f' to go fullscreen where this feature is supported
 			THREEx.FullScreen.bindKey();
+			// transparently support window resize
 			THREEx.WindowResize(renderer, camera);
 
-			cameraCtrl	= new THREE.DragPanControls(camera)
-
 			// here you add your objects
+			// - you will most likely replace this part by your own
 			var geometry	= new THREE.TorusGeometry( 1, 0.42 );
 			var material	= new THREE.MeshNormalMaterial();
 			var mesh	= new THREE.Mesh( geometry, material );
 			scene.add( mesh );
-
 		}
 
 		function animate() {
-
+			
 			requestAnimationFrame( animate );
 
 			render();
-			
-			stats.update();
 
+			stats.update();
 		}
 
 		function render() {
 
-			cameraCtrl.update();
+			cameraControls.update();
 
 			renderer.render( scene, camera );
 
