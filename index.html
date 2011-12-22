@@ -30,12 +30,13 @@
 		<a href="https://github.com/mrdoob/three.js/" target="_blank">three.js</a>
 	</div> 
 	<div id="inlineDoc">
-		<i>f</i> for fullscreen - <i>p</i> for screenshot
+		<span id="fullscreenDoc"><i>f</i> for fullscreen - </span><i>p</i> for screenshot
 	</div> 
 
 	<script type="text/javascript">
 		var stats, scene, renderer;
 		var camera, cameraControl;
+
 
 		if( !init() )	animate();
 
@@ -75,12 +76,16 @@
 			// create a camera contol
 			cameraControls	= new THREE.DragPanControls(camera)
 
+			// transparently support window resize
+			THREEx.WindowResize.bind(renderer, camera);
 			// allow 'p' to make screenshot
 			THREEx.Screenshot.bindKey(renderer);
 			// allow 'f' to go fullscreen where this feature is supported
-			THREEx.FullScreen.bindKey();
-			// transparently support window resize
-			THREEx.WindowResize.bind(renderer, camera);
+			if( THREEx.FullScreen.available() ){
+				THREEx.FullScreen.bindKey();				
+			}else{
+				document.getElementById('fullscreenDoc').style.display	= "none";				
+			}
 
 			// here you add your objects
 			// - you will most likely replace this part by your own
