@@ -47,7 +47,8 @@ var THREEx	= THREEx 		|| {};
 			return { width: curW, height: curH };
 		}
 		// callback once the image is loaded
-		var onLoad	= function(){
+		var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+		var onLoad	= __bind(function(){
 			// init the canvas
 			var canvas	= document.createElement('canvas');
 			canvas.width	= dstW;	canvas.height	= dstH;
@@ -70,7 +71,7 @@ var THREEx	= THREEx 		|| {};
 			var newDataUrl	= canvas.toDataURL(mimetype);
 			// notify the url to the caller
 			callback && callback(newDataUrl)
-		}.bind(this);
+		}, this);
 
 		// Create new Image object
 		var image 	= new Image();
@@ -96,7 +97,8 @@ var THREEx	= THREEx 		|| {};
 		};
 
 		// callback to handle keypress
-		var onKeyPress	= function(event){
+		var __bind	= function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+		var onKeyPress	= __bind(function(event){
 			// return now if the KeyPress isnt for the proper charCode
 			if( event.which !== charCode )	return;
 			// get the renderer output
@@ -109,7 +111,7 @@ var THREEx	= THREEx 		|| {};
 				// * resize == async so if callback is a window open, it triggers the pop blocker
 				_aspectResize(dataUrl, width, height, callback);				
 			}
-		}.bind(this);
+		}, this);
 
 		// listen to keypress
 		// NOTE: for firefox it seems mandatory to listen to document directly

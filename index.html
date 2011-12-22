@@ -6,13 +6,12 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 			
 		<script src="vendor/three.js/Three.js"></script>
+		<script src="vendor/three.js/Detector.js"></script>
 		<!-- see details at http://paulirish.com/2011/requestanimationframe-for-smart-animating/ -->
 		<script src="vendor/three.js/RequestAnimationFrame.js"></script>
+		<!-- https://github.com/mrdoob/stats.js -->
 		<script src="vendor/three.js/Stats.js"></script>
-		<script src="vendor/three.js/Detector.js"></script>
 
-		<script src="vendor/es5-shim/es5-shim.js"></script>
-		
 		<script src="vendor/threex/THREEx.screenshot.js"></script>
 		<script src="vendor/threex/THREEx.FullScreen.js"></script>
 		<script src="vendor/threex/THREEx.WindowResize.js"></script>
@@ -21,7 +20,9 @@
 		<link  href="css/main.css" rel="stylesheet"></link>
 	</head>
 <body>
+	<!-- three.js container -->
     	<div id="container"></div>
+	<!-- info on screen display -->
 	<div id="info">
 		<a href="http://learningthreejs.com/blog/2011/12/20/boilerplate-for-three-js/" target="_blank">LearningThree.js</a>
 		boiler plate for
@@ -37,6 +38,7 @@
 
 		if( !init() )	animate();
 
+		// init the scene
 		function init(){
 			if( Detector.webgl ){
 				renderer = new THREE.WebGLRenderer({
@@ -86,6 +88,7 @@
 			scene.add( mesh );
 		}
 
+		// animation loop
 		function animate() {
 			// loop on request animation loop
 			requestAnimationFrame( animate );
@@ -97,6 +100,7 @@
 			stats.update();
 		}
 
+		// render the scene
 		function render() {
 
 			// update camera controls
