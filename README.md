@@ -7,7 +7,7 @@ More details [here](http://learningthreejs.com/blog/2011/12/20/boilerplate-for-t
 
 # Get Started
 ```
-	git clone https://github.com/jeromeetienne/threejsboilerplate.git
+git clone https://github.com/jeromeetienne/threejsboilerplate.git
 ```
 
 And start updating ```index.html``` until it fits yours need.
