@@ -6,3 +6,10 @@ Compatibility is key.
 It support desktop and mobile.
 It displays in webgl if available, else fallback on canvas-2d.
 It handles mouse events and touch events.
+
+# Get Started
+```
+	git clone https://github.com/jeromeetienne/threejsboilerplate.git
+```
+
+And start updating ```index.html``` until it fits yours need
