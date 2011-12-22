@@ -79,7 +79,7 @@
 			// allow 'f' to go fullscreen where this feature is supported
 			THREEx.FullScreen.bindKey();
 			// transparently support window resize
-			THREEx.WindowResize(renderer, camera);
+			THREEx.WindowResize.bind(renderer, camera);
 
 			// here you add your objects
 			// - you will most likely replace this part by your own
