@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 			
 		<script src="vendor/three.js/Three.js"></script>
+		<!-- see details at http://paulirish.com/2011/requestanimationframe-for-smart-animating/ -->
 		<script src="vendor/three.js/RequestAnimationFrame.js"></script>
 		<script src="vendor/three.js/Stats.js"></script>
 		<script src="vendor/three.js/Detector.js"></script>
@@ -32,18 +33,18 @@
 
 	<script type="text/javascript">
 		var stats, scene, renderer;
-		var camera, cameraControls, scene, renderer;
+		var camera, cameraControl;
 
 		if( !init() )	animate();
 
 		function init(){
 			if( Detector.webgl ){
 				renderer = new THREE.WebGLRenderer({
-					antialias		: true,
-					preserveDrawingBuffer	: true
+					antialias		: true,	// to get smoother output
+					preserveDrawingBuffer	: true	// to allow screenshot
 				});
 				renderer.setClearColorHex( 0xBBBBBB, 1 );
-			// if webgl is required
+			// uncomment if webgl is required
 			//}else{
 			//	Detector.addGetWebGLMessage();
 			//	return true;
@@ -86,20 +87,23 @@
 		}
 
 		function animate() {
-			
+			// loop on request animation loop
 			requestAnimationFrame( animate );
-
+			
+			// do the render
 			render();
 
+			// update stats
 			stats.update();
 		}
 
 		function render() {
 
+			// update camera controls
 			cameraControls.update();
 
+			// actually render the scene
 			renderer.render( scene, camera );
-
 		}
 	</script>
 </body>
