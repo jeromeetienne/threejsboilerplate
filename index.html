@@ -1,9 +1,9 @@
 <html>
 	<head>
-
 		<title>learningthree.js boiler plate for three.js</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		
 			
 		<script src="vendor/three.js/Three.js"></script>
 		<script src="vendor/three.js/Detector.js"></script>
@@ -15,8 +15,8 @@
 		<script src="vendor/threex/THREEx.screenshot.js"></script>
 		<script src="vendor/threex/THREEx.FullScreen.js"></script>
 		<script src="vendor/threex/THREEx.WindowResize.js"></script>
-
 		<script src="vendor/DragPanControls.js"></script>
+
 		<link  href="css/main.css" rel="stylesheet"></link>
 	</head>
 <body>
@@ -40,6 +40,7 @@
 
 		// init the scene
 		function init(){
+
 			if( Detector.webgl ){
 				renderer = new THREE.WebGLRenderer({
 					antialias		: true,	// to get smoother output
@@ -55,7 +56,7 @@
 			}
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.getElementById('container').appendChild(renderer.domElement);
-			
+
 			// add Stats.js - https://github.com/mrdoob/stats.js
 			stats = new Stats();
 			stats.domElement.style.position	= 'absolute';
@@ -90,9 +91,10 @@
 
 		// animation loop
 		function animate() {
+
 			// loop on request animation loop
 			requestAnimationFrame( animate );
-			
+
 			// do the render
 			render();
 
