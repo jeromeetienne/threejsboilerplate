@@ -99,6 +99,8 @@
 		function animate() {
 
 			// loop on request animation loop
+			// - it has to be at the begining of the function
+			// - see details at http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 			requestAnimationFrame( animate );
 
 			// do the render
