@@ -1,4 +1,7 @@
-THREE.DragPanControls	= function(object, domElement)
+/** @namespace */
+var THREEx	= THREEx 		|| {};
+
+THREEx.DragPanControls	= function(object, domElement)
 {
 	this._object	= object;
 	this._domElement= domElement || document;
@@ -24,27 +27,27 @@ THREE.DragPanControls	= function(object, domElement)
 	this._domElement.addEventListener( 'touchmove', this._$onTouchMove, false );
 }
 
-THREE.DragPanControls.prototype.destroy	= function()
+THREEx.DragPanControls.prototype.destroy	= function()
 {
 	this._domElement.removeEventListener( 'mousemove', this._$onMouseMove, false );
 	this._domElement.removeEventListener( 'touchstart', this._$onTouchStart,false );
 	this._domElement.removeEventListener( 'touchmove', this._$onTouchMove, false );
 }
 
-THREE.DragPanControls.prototype.update	= function(event)
+THREEx.DragPanControls.prototype.update	= function(event)
 {
 	this._object.position.x += ( this._mouseX * this.rangeX - this._object.position.x ) * this.speedX;
 	this._object.position.y += ( this._mouseY * this.rangeY - this._object.position.y ) * this.speedY;
 	this._object.lookAt( this.target );
 }
 
-THREE.DragPanControls.prototype._onMouseMove	= function(event)
+THREEx.DragPanControls.prototype._onMouseMove	= function(event)
 {
 	this._mouseX	= ( event.clientX / window.innerWidth ) - 0.5;
 	this._mouseY	= ( event.clientY / window.innerHeight) - 0.5;
 }
 
-THREE.DragPanControls.prototype._onTouchStart	= function(event)
+THREEx.DragPanControls.prototype._onTouchStart	= function(event)
 {
 	if( event.touches.length != 1 )	return;
 
@@ -54,7 +57,7 @@ THREE.DragPanControls.prototype._onTouchStart	= function(event)
 	this._mouseY	= ( event.touches[ 0 ].pageY / window.innerHeight) - 0.5;
 }
 
-THREE.DragPanControls.prototype._onTouchMove	= function(event)
+THREEx.DragPanControls.prototype._onTouchMove	= function(event)
 {
 	if( event.touches.length != 1 )	return;
 
