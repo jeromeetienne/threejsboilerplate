@@ -8,7 +8,7 @@ body {
 	font-family	: arial;
 	font-size	: 100%;
 }
-#info {
+#info .top {
 	position	: absolute;
 	top		: 0px;
 	width		: 100%;
@@ -22,7 +22,7 @@ body {
 #info a:hover {
 	text-decoration	: underline;
 }
-#inlineDoc {
+#info .bottom {
 	position	: absolute;
 	bottom		: 0px;
 	right		: 5px;
