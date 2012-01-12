@@ -16,7 +16,7 @@
 		<script src="vendor/threex/THREEx.screenshot.js"></script>
 		<script src="vendor/threex/THREEx.FullScreen.js"></script>
 		<script src="vendor/threex/THREEx.WindowResize.js"></script>
-		<script src="vendor/threex/threex.dragpancontrols.js"></script>
+		<script src="vendor/threex.dragpancontrols.js"></script>
 
 		<link  href="css/main.css" rel="stylesheet"/>
 	</head>
@@ -74,7 +74,7 @@
 			scene.add(camera);
 
 			// create a camera contol
-			cameraControls	= new THREE.DragPanControls(camera)
+			cameraControls	= new THREEx.DragPanControls(camera)
 
 			// transparently support window resize
 			THREEx.WindowResize.bind(renderer, camera);
