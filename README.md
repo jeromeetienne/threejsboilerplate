@@ -9,7 +9,7 @@ Try out the [boilerplate for three.js](http://jeromeetienne.github.io/threejs-bo
 ## [DEMO](http://jeromeetienne.github.io/threejs-boilerplate/index.html)
 
 ## A Screenshot
-[![screenshot](https://cloud.githubusercontent.com/assets/252962/4397237/4081c136-443f-11e4-9d4a-9c5554e07163.jpg)](http://jeromeetienne.github.io/threejs-boilerplate/index.html)
+[![screenshot](https://cloud.githubusercontent.com/assets/252962/4397369/9f9c844c-4441-11e4-9bd1-daa99a79a4d0.jpg)](http://jeromeetienne.github.io/threejs-boilerplate/index.html)
 
 ## Variants
 
