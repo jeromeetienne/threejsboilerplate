@@ -1,13 +1,20 @@
-[boilerplate for three.js](https://github.com/jeromeetienne/threejsboilerplate)
-is a template to get you started. You download it and modify it until it fits your needs.
-It is a fast way to start a clean project with [three.js](https://github.com/mrdoob/three.js/).
-It avoids repetitive tasks, following DRY principles.
-It includes various good practices and compatibilities features.
-More details [here](http://learningthreejs.com/blog/2011/12/20/boilerplate-for-three-js/).
+## Boilerplate for three.js on desktop and mobile
 
-# Get Started
-```
-git clone https://github.com/jeromeetienne/threejsboilerplate.git
-```
+Here is a boilerplate for three.js. It is working on desktop and on mobile. 
+this include android and ios.
 
-And start updating ```index.html``` until it fits yours need.
+Try out the [boilerplate for three.js](http://jeromeetienne.github.io/threejs-boilerplate/index.html) or look at [its source](https://github.com/jeromeetienne/threejs-boilerplate/blob/master/index.html).
+
+
+## [DEMO](http://jeromeetienne.github.io/threejs-boilerplate/index.html)
+
+## A Screenshot
+[![screenshot](https://cloud.githubusercontent.com/assets/252962/4397237/4081c136-443f-11e4-9d4a-9c5554e07163.jpg)](http://jeromeetienne.github.io/threejs-boilerplate/index.html)
+
+## Variants
+
+
+* If you like [require.js](http://requirejs.org/), here is a [boilerplate variant with require.js](http://jeromeetienne.github.io/threejs-boilerplate/boilerplate-requirejs.html) - [source](https://github.com/jeromeetienne/threejs-boilerplate/blob/master/boilerplate-requirejs.html).
+
+## License
+Released under [MIT license](https://github.com/jeromeetienne/threejs-boilerplate/blob/master/LICENSE)
